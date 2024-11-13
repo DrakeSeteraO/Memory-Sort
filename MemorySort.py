@@ -7,7 +7,20 @@ def memorySort(lst: list) -> list:
             low = l
     ran = high - low + 1
     output = [None] * ran
+    amount = dict()
     
     for l in lst:
         output[l - low] = l
-    return output
+        if l in amount.keys():
+            amount[l] += 1
+        else:
+            amount[l] = 1
+    
+    output2 = [0] * len(lst)
+    p = 0
+    for o in output:
+        if o is not None:
+              for _ in range(amount[o]):
+                  output2[p] = o
+                  p += 1     
+    return output2
