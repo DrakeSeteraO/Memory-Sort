@@ -14,21 +14,16 @@ def memorySort(lst: list) -> list:
         elif l < low:
             low: int = l
     ran: int = high - low + 1
-    output: list = [None] * ran
-    amount = dict()
+    amount: list = [0] * ran
     
     for l in lst:
-        output[l - low] = l
-        if l in amount.keys():
-            amount[l] = amount[l] + 1
-        else:
-            amount[l] = 1
+        amount[l - low] += 1
     
-    output2: list = [0] * len(lst)
-    p: int = 0
-    for o in output:
-        if o is not None:
-              for _ in range(amount[o]):
-                  output2[p] = o
-                  p: int = p + 1     
-    return output2
+    output: list = [0] * len(lst)
+    p = 0
+    for o in range(len(amount)):
+        for _ in range(amount[o]):
+            output[p] = o + low
+            p: int = p + 1
+          
+    return output
