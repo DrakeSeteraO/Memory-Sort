@@ -15,9 +15,8 @@ Date:
     11/25/2024
 
 Version:
-    3.0.0
+    3.1.0
 """
-
 
 
 
@@ -29,7 +28,7 @@ def memorySort(lst: list, mode: str = 'i') -> list:
         mode (str): 
         'i' = (default) list containing integers
         'n' = list containing integers with no repeats
-        's' = list containing string elements
+        'c' = list containing characters
 
     Returns:
         list: sorted list
@@ -39,8 +38,8 @@ def memorySort(lst: list, mode: str = 'i') -> list:
         return memorySortI(lst)
     if mode.lower() == 'n':
         return memorySortN(lst)
-    if mode.lower() == 's':
-        return memorySortS(lst)
+    if mode.lower() == 'c':
+        return memorySortC(lst)
     return None
 
 
@@ -103,15 +102,14 @@ def memorySortN(lst: list) -> list:
     return output
 
 
-
-def memorySortS(lst: list) -> list:
-    """Sorts the inputted list of string elements in ascending order utilizing memory to speed up computation time
+def memorySortC(lst: list) -> list:
+    """Sorts the inputted list of character elements in ascending order utilizing memory to speed up computation time
 
     Args:
-        lst (list): List of string elements to get sorted
+        lst (list): List of character elements to get sorted
 
     Returns:
-        list: sorted list of string elements
+        list: sorted list of character elements
     """
     
     high, low = ord(lst[0]), ord(lst[0])
