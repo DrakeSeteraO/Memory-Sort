@@ -12,33 +12,42 @@ Author(s):
     Drake T. Setera
 
 Date:
-    11/25/2024
+    12/3/2024
 
 Version:
-    3.1.0
+    3.2.0
 """
 
 
 
-def memorySort(lst: list, mode: str = 'i') -> list:
+def memorySort(lst: list, mode: str = 'i',type = int) -> list:
     """Sorts the inputted list in ascending order utilizing memory to speed up computation time
 
     Args:
         lst (list): List to get sorted
+        
         mode (str): 
-        'i' = (default) list containing integers
-        'n' = list containing integers with no repeats
-        'c' = list containing characters
+        'i' or 'int' = (default) list containing integers
+        'n' or 'None' = list containing integers with no repeats
+        'c' or 'chr' = list containing characters
+        
+        type:
+        int = (default) list containing integers
+
+
 
     Returns:
         list: sorted list
     """
-    
-    if mode.lower() == 'i':
+    if mode == 'i':
+        if isinstance(type, int):
+            return memorySortI(lst)
+
+    if mode.lower() == 'i' or mode.lower() == 'int':
         return memorySortI(lst)
-    if mode.lower() == 'n':
+    if mode.lower() == 'n' or mode.lower() == 'none':
         return memorySortN(lst)
-    if mode.lower() == 'c':
+    if mode.lower() == 'c' or mode.lower() == 'chr':
         return memorySortC(lst)
     return None
 
@@ -91,11 +100,11 @@ def memorySortN(lst: list) -> list:
     high, low = lst[0], lst[0]
     for l in lst:
         if l > high:
-            high = l
+            high: int = l
         elif l < low:
-            low = l
-    ran = high - low + 1
-    output = [None] * ran
+            low: int = l
+    ran: int = high - low + 1
+    output: list = [None] * ran
     
     for l in lst:
         output[l - low] = l
@@ -112,7 +121,8 @@ def memorySortC(lst: list) -> list:
         list: sorted list of character elements
     """
     
-    high, low = ord(lst[0]), ord(lst[0])
+    high: int = ord(lst[0])
+    low: int = high
     for l in lst:
         temp: int = ord(l)
         if temp > high:
@@ -125,7 +135,7 @@ def memorySortC(lst: list) -> list:
     for l in lst:
         amount[ord(l) - low] += 1
     
-    output: list = [0] * len(lst)
+    output: list = [''] * len(lst)
     p: int = 0
     for o in range(len(amount)):
         for _ in range(amount[o]):
