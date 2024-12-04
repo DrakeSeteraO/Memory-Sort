@@ -20,7 +20,7 @@ Version:
 
 
 
-def memorySort(lst: list, mode: str = 'i',type = int) -> list:
+def memorySort(lst: list, mode: str = '') -> list:
     """Sorts the inputted list in ascending order utilizing memory to speed up computation time
 
     Args:
@@ -30,25 +30,27 @@ def memorySort(lst: list, mode: str = 'i',type = int) -> list:
         'i' or 'int' = (default) list containing integers
         'n' or 'None' = list containing integers with no repeats
         'c' or 'chr' = list containing characters
-        
-        type:
-        int = (default) list containing integers
+        's' or 'str' = list containing strings
 
 
 
     Returns:
         list: sorted list
     """
-    if mode == 'i':
-        if isinstance(type, int):
+    if mode == '':
+        if isinstance(lst[0], int):
             return memorySortI(lst)
+        if isinstance(lst[0], str):
+            return memorySortS(lst)
 
-    if mode.lower() == 'i' or mode.lower() == 'int':
+    if mode.lower() == 'i' or mode.lower() == 'int' or mode.lower() == '':
         return memorySortI(lst)
     if mode.lower() == 'n' or mode.lower() == 'none':
         return memorySortN(lst)
     if mode.lower() == 'c' or mode.lower() == 'chr':
         return memorySortC(lst)
+    if mode.lower() == 's' or mode.lower() == 'str':
+        return memorySortS(lst)
     return None
 
 
@@ -111,6 +113,7 @@ def memorySortN(lst: list) -> list:
     return output
 
 
+
 def memorySortC(lst: list) -> list:
     """Sorts the inputted list of character elements in ascending order utilizing memory to speed up computation time
 
@@ -141,5 +144,59 @@ def memorySortC(lst: list) -> list:
         for _ in range(amount[o]):
             output[p] = chr(o + low)
             p: int = p + 1
+          
+    return output
+
+
+
+def memorySortS(lst: list) -> list:
+    """Sorts the inputted list of string elements in ascending order utilizing memory to speed up computation time
+
+    Args:
+        lst (list): List of string elements to get sorted
+
+    Returns:
+        list: sorted list of string elements
+    """
+    
+    high: int = 0
+    for l in lst[0]:
+        high = high * 128 + ord(l)
+    low: int = high
+    
+    for l in lst:
+        temp: int = 0
+        for i in l:
+           temp = temp * 128 + ord(i)
+         
+        if temp > high:
+            high: int = temp
+        elif temp < low:
+            low: int = temp
+    
+    
+    ran: int = high - low + 1
+    amount: list = [0] * ran
+    
+    for l in lst:
+        temp: int = 0
+        for i in l:
+           temp = temp * 128 + ord(i)
+        amount[temp - low] += 1
+    
+    output: list = [''] * len(lst)
+    p: int = 0
+    for o in range(len(amount)):
+        if amount[o] != 0:
+            i = o + low
+            out = ''
+            while i != 0:
+                letter = chr(i % 128)
+                i = i // 128
+                out = letter + out
+        
+            for _ in range(amount[o]):
+                output[p] = out
+                p: int = p + 1
           
     return output
