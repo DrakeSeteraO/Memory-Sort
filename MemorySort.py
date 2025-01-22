@@ -15,7 +15,7 @@ Date:
     1/21/2025
 
 Version:
-    5.0.0
+    5.1.0
 """
 
 
@@ -28,12 +28,13 @@ def memorySort(lst: list, mode: str = '') -> list:
         
         mode (str):
         : (default) = sorts list using mode of first element in the given list 
-        : 'i' or 'int' = list containing integers
-        : 'f' or 'float' = list containing float
-        : 'n' or 'None' = list containing integers with no repeats
-        : 'c' or 'chr' = list containing characters
-        : 's' or 'str' = list containing strings (sorted based on letter order)
         : 'a' or 'ascii' = list containing strings (sorted based on string ascii value)
+        : 'c' or 'chr' = list containing characters
+        : 'f' or 'float' = list containing float
+        : 'i' or 'int' = list containing integers
+        : 'n' or 'None' = list containing integers with no repeats
+        : 's' or 'str' = list containing strings (sorted based on letter order)
+
 
 
     Returns:
@@ -42,12 +43,15 @@ def memorySort(lst: list, mode: str = '') -> list:
 
 
     if mode == '':
-        if isinstance(lst[0], int):
-            return memorySortI(lst)
-        if isinstance(lst[0], float):
-            return memorySortF(lst)
-        if isinstance(lst[0], str):
-            return memorySortS(lst)
+        if isinstance(lst, list):
+            if isinstance(lst[0], int):
+                return memorySortI(lst)
+            if isinstance(lst[0], float):
+                return memorySortF(lst)
+            if isinstance(lst[0], str):
+                return memorySortS(lst)
+        elif isinstance(lst, str):
+                return memorySortString(lst)
 
 
     if mode.lower() == 'i' or mode.lower() == 'int' or mode.lower() == '':
@@ -171,7 +175,7 @@ def memorySortC(lst: list) -> list:
 
 
 def memorySortA(lst: list) -> list:
-    """Sorts the inputted list of string elements in ascending order based on string ascii value utilizing memory to speed up computation time
+    """Sorts the inputted list of string elements in ascending order based on ascii value utilizing memory to speed up computation time
 
     Args:
         lst (list): List of string elements to get sorted
@@ -328,4 +332,15 @@ def memorySortS(lst: list) -> list:
                 output[p] = chr(o + low) + amount[o][a]
                 p: int = p + 1
           
+    return output
+
+
+
+def memorySortString(string: str) -> str:
+    temp = memorySortC(string)
+    output = ''
+        
+    for t in temp:
+        output = output + t
+    
     return output
