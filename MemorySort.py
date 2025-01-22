@@ -1,21 +1,21 @@
 
 """
 Purpose:
-    This file contains memorySort(), which can sort a list with a time complexity of O(n + m). 
+    This file contains memorySort(), which can sort a list with a time complexity of O(n + k). 
     n = amount of elements in list
-    m = distance between the smallest integer and highest integer 
+    k = distance between the smallest integer and highest integer 
     
-    This file also contains variations of the sorting algorithm so that it can be used with different lists
+    This file also contains variations of the sorting algorithm so that it can be used with lists containing different object types
 
     
 Author(s):
     Drake T. Setera
 
 Date:
-    12/4/2024
+    1/21/2025
 
 Version:
-    4.0.1
+    5.0.0
 """
 
 
@@ -26,31 +26,42 @@ def memorySort(lst: list, mode: str = '') -> list:
     Args:
         lst (list): List to get sorted
         
-        mode (str): 
-        'i' or 'int' = (default) list containing integers
-        'n' or 'None' = list containing integers with no repeats
-        'c' or 'chr' = list containing characters
-        's' or 'str' = list containing strings
-
+        mode (str):
+        : (default) = sorts list using mode of first element in the given list 
+        : 'i' or 'int' = list containing integers
+        : 'f' or 'float' = list containing float
+        : 'n' or 'None' = list containing integers with no repeats
+        : 'c' or 'chr' = list containing characters
+        : 's' or 'str' = list containing strings (sorted based on letter order)
+        : 'a' or 'ascii' = list containing strings (sorted based on string ascii value)
 
 
     Returns:
         list: sorted list
     """
+
+
     if mode == '':
         if isinstance(lst[0], int):
             return memorySortI(lst)
+        if isinstance(lst[0], float):
+            return memorySortF(lst)
         if isinstance(lst[0], str):
             return memorySortS(lst)
 
+
     if mode.lower() == 'i' or mode.lower() == 'int' or mode.lower() == '':
         return memorySortI(lst)
+    if mode.lower() == 'f' or mode.lower() == 'float':
+        return memorySortF(lst)
     if mode.lower() == 'n' or mode.lower() == 'none':
         return memorySortN(lst)
     if mode.lower() == 'c' or mode.lower() == 'chr':
         return memorySortC(lst)
     if mode.lower() == 's' or mode.lower() == 'str':
         return memorySortS(lst)
+    if mode.lower() == 'a' or mode.lower() == 'ascii':
+        return memorySortA(lst)
     return None
 
 
@@ -64,6 +75,7 @@ def memorySortI(lst: list) -> list:
     Returns:
         list: sorted list of integers
     """
+
     
     high, low = lst[0], lst[0]
     for l in lst:
@@ -73,9 +85,11 @@ def memorySortI(lst: list) -> list:
             low: int = l
     ran: int = high - low + 1
     amount: list = [0] * ran
+
     
     for l in lst:
         amount[l - low] += 1
+
     
     output: list = [0] * len(lst)
     p: int = 0
@@ -83,6 +97,7 @@ def memorySortI(lst: list) -> list:
         for _ in range(amount[o]):
             output[p] = o + low
             p: int = p + 1
+
           
     return output
 
@@ -99,6 +114,7 @@ def memorySortN(lst: list) -> list:
         list: sorted list of integers 
     """
 
+
     high, low = lst[0], lst[0]
     for l in lst:
         if l > high:
@@ -107,6 +123,7 @@ def memorySortN(lst: list) -> list:
             low: int = l
     ran: int = high - low + 1
     output: list = [None] * ran
+
     
     for l in lst:
         output[l - low] = l
@@ -123,6 +140,7 @@ def memorySortC(lst: list) -> list:
     Returns:
         list: sorted list of character elements
     """
+
     
     high: int = ord(lst[0])
     low: int = high
@@ -134,9 +152,11 @@ def memorySortC(lst: list) -> list:
             low: int = temp
     ran: int = high - low + 1
     amount: list = [0] * ran
+
     
     for l in lst:
         amount[ord(l) - low] += 1
+
     
     output: list = [''] * len(lst)
     p: int = 0
@@ -144,13 +164,14 @@ def memorySortC(lst: list) -> list:
         for _ in range(amount[o]):
             output[p] = chr(o + low)
             p: int = p + 1
+
           
     return output
 
 
 
-def memorySortS(lst: list) -> list:
-    """Sorts the inputted list of string elements in ascending order utilizing memory to speed up computation time
+def memorySortA(lst: list) -> list:
+    """Sorts the inputted list of string elements in ascending order based on string ascii value utilizing memory to speed up computation time
 
     Args:
         lst (list): List of string elements to get sorted
@@ -158,11 +179,13 @@ def memorySortS(lst: list) -> list:
     Returns:
         list: sorted list of string elements
     """
+
     
     high: int = 0
     for l in lst[0]:
         high = high * 128 + ord(l)
     low: int = high
+
     
     for l in lst:
         temp: int = 0
@@ -183,6 +206,7 @@ def memorySortS(lst: list) -> list:
         for i in l:
            temp = temp * 128 + ord(i)
         amount[temp - low] += 1
+
     
     output: list = [''] * len(lst)
     p: int = 0
@@ -197,6 +221,111 @@ def memorySortS(lst: list) -> list:
         
             for _ in range(amount[o]):
                 output[p] = out
+                p: int = p + 1
+
+          
+    return output
+
+
+
+def memorySortF(lst: list) -> list:
+    """Sorts the inputted list of float in ascending order utilizing memory to speed up computation time
+
+    Args:
+        lst (list): List of float to get sorted
+
+    Returns:
+        list: sorted list of float
+    """
+ 
+    
+    high, low = int(lst[0]), int(lst[0])
+    for l in lst:
+        temp = int(l)
+        if temp > high:
+            high: int = temp
+        elif temp < low:
+            low: int = temp
+    ran: int = high - low + 1
+    amount: list = [0] * ran
+ 
+    
+    for l in lst:
+        if amount[int(l) - low] == 0:
+           amount[int(l) - low] = [l] 
+        else:
+           amount[int(l) - low].append(l)
+ 
+    
+    output: list = [0] * len(lst)
+    p: int = 0       
+    for am in amount:
+        if isinstance(am,list):
+            am.sort() 
+            for a in am:
+                output[p] = a
+                p: int = p + 1
+ 
+          
+    return output
+
+
+
+def memorySortS(lst: list) -> list:
+    """Sorts the inputted list of string elements in ascending order utilizing memory to speed up computation time
+
+    Args:
+        lst (list): List of string elements to get sorted
+
+    Returns:
+        list: sorted list of string elements
+    """
+    if len(lst) == 0:
+        return []
+    if len(lst) == 1:
+        return lst
+    
+    
+    high: int = -1
+    low: int = 256
+    for l in lst:
+        if len(l) > 0:
+            temp: int = ord(l[0])
+            if temp > high:
+                high: int = temp
+            if temp < low:
+                low: int = temp
+   
+            
+    if (low == high) or (low == 256 and high == -1):
+        return lst        
+
+            
+    ran: int = high - low + 1
+    amount: list = [0] * ran
+ 
+    
+    for l in lst:
+        if amount[ord(l[0]) - low] == 0:
+           amount[ord(l[0]) - low] = [l] 
+        else:
+           amount[ord(l[0]) - low].append(l)
+  
+  
+    for am in range(len(amount)):
+        if isinstance(amount[am], list):
+            for a in range(len(amount[am])):
+                amount[am][a] = amount[am][a][1:]
+            
+            amount[am] = memorySortS(amount[am])
+        
+  
+    output: list = [''] * len(lst)
+    p: int = 0
+    for o in range(len(amount)):
+        if isinstance(amount[o], list):
+            for a in range(len(amount[o])):
+                output[p] = chr(o + low) + amount[o][a]
                 p: int = p + 1
           
     return output
